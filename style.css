@@ -1,4 +1,4 @@
-/* Установка и использование шрифта */
+/* Установка и использование шрифтов */
 @font-face {
   font-family: 'Garet';
   src: url('assets/Garet-Book.ttf') format('truetype');
@@ -23,14 +23,14 @@
 body {
   background: linear-gradient(180deg, #f0f4f8 0%, #cbd5e1 100%);
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-/* Орнаменты */
+/* Орнаменты по углам */
 .ornament {
   position: absolute;
   width: 240px;
@@ -47,7 +47,7 @@ body {
 .bottom-left { bottom: 60px; left: 0; transform: scaleY(-1); }
 .bottom-right { bottom: 60px; right: 0; transform: scale(-1, -1); }
 
-/* Основа */
+/* Основной контейнер приложения */
 .app-viewport {
   max-width: 960px;
   width: 100%;
@@ -61,7 +61,7 @@ body {
   z-index: 2;
 }
 
-/* Шапочка сайта */
+/* Шапка сайта (Header) */
 .top-header {
   display: grid;
   grid-template-columns: 220px 1fr 220px;
@@ -139,7 +139,7 @@ body {
   width: 220px;
 }
 
-/* Статус фигня сверху */
+/* Панель статуса геймификации */
 .status-bar {
   display: flex;
   align-items: center;
@@ -181,7 +181,7 @@ body {
   text-transform: uppercase;
 }
 
-/* Сетка для основных кнопок выстраивание */
+/* Сетка карточек-кнопок */
 .main-buttons-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -245,7 +245,7 @@ body {
 .btn-teal { background-color: #00a896; }
 .btn-orange { background-color: #f4a261; }
 
-/* Тг Плашка */
+/* Баннер Telegram */
 .telegram-banner {
   display: flex;
   align-items: center;
@@ -272,7 +272,6 @@ body {
   gap: 16px;
 }
 
-/* Кружок для иконки */
 .tg-icon-wrapper {
   width: 44px;
   height: 44px;
@@ -288,7 +287,7 @@ body {
 .tg-icon-wrapper svg {
   width: 24px;
   height: 24px;
-  color: #229ed9; /* Телеграмм иконка*/
+  color: #229ed9;
 }
 
 .tg-text-block {
@@ -311,7 +310,7 @@ body {
 .tg-right {
   display: flex;
   align-items: center;
-  gap: 20px; /* Отступы*/
+  gap: 20px;
 }
 
 .tg-members-badge {
@@ -324,7 +323,6 @@ body {
   white-space: nowrap;
 }
 
-/* Телеграмм ссылка */
 .tg-arrow {
   width: 32px;
   height: 32px;
@@ -343,7 +341,7 @@ body {
   transform: translateX(4px);
 }
 
-/* Нижняя черная плашка*/
+/* Нижний подвал сайта */
 .footer-bar {
   width: 100%;
   background-color: #1e293b;
@@ -367,61 +365,59 @@ body {
 }
 
 /* ==========================================
-   АДАПТИВ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (SMARTPHONES)
+   АДАПТИВНЫЙ ИНТЕРФЕЙС ДЛЯ СМАРТФОНОВ
    ========================================== */
-
 @media (max-width: 768px) {
-  /* 1. Уменьшаем орнаменты, чтобы они не перекрывали текст */
+  /* Уменьшаем элементы узоров */
   .ornament {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
   }
   
   .bottom-left, .bottom-right {
     bottom: 80px;
   }
 
-  /* 2. Настройка главного контейнера */
   .app-viewport {
     padding: 12px 14px 20px 14px;
   }
 
-  /* 3. Шапка: перестраиваем из 3 колонок в одну колонку */
+  /* Перестройка шапки */
   .top-header {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 12px;
   }
 
   .header-spacer {
-    display: none; /* Убираем пустую распорку на мобилках */
+    display: none;
   }
 
   .logo-title {
-    font-size: 2.5rem; /* Уменьшаем размер логотипа */
+    font-size: 2.6rem;
   }
 
   .subtitle {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
-  /* 4. Статус-бар: разрешаем перенос элементов */
+  /* Перестройка панели статуса */
   .status-bar {
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 10px 12px;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
   }
 
   .status-divider {
-    display: none; /* Скрываем палочки-разделители */
+    display: none;
   }
 
-  /* 5. Кнопки: вместо 2 колонок делаем 1 колонку */
+  /* Кнопки выстраиваются в 1 колонку */
   .main-buttons-grid {
     grid-template-columns: 1fr;
     gap: 12px;
-    margin-top: 20px;
+    margin-top: 16px;
   }
 
   .btn {
@@ -437,12 +433,12 @@ body {
     font-size: 0.8rem;
   }
 
-  /* 6. Telegram баннер: компактный вид */
+  /* Компактный Telegram баннер */
   .telegram-banner {
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
-    padding: 16px;
+    gap: 12px;
+    padding: 14px;
   }
 
   .tg-right {
@@ -450,7 +446,7 @@ body {
     justify-content: space-between;
   }
 
-  /* 7. Подвал: перестраиваем строки в колонку */
+  /* Компактный подвал */
   .footer-content {
     flex-direction: column;
     gap: 8px;
