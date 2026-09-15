@@ -365,3 +365,96 @@ body {
   color: #e2e8f0;
   font-weight: 600;
 }
+
+/* ==========================================
+   АДАПТИВ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (SMARTPHONES)
+   ========================================== */
+
+@media (max-width: 768px) {
+  /* 1. Уменьшаем орнаменты, чтобы они не перекрывали текст */
+  .ornament {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .bottom-left, .bottom-right {
+    bottom: 80px;
+  }
+
+  /* 2. Настройка главного контейнера */
+  .app-viewport {
+    padding: 12px 14px 20px 14px;
+  }
+
+  /* 3. Шапка: перестраиваем из 3 колонок в одну колонку */
+  .top-header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .header-spacer {
+    display: none; /* Убираем пустую распорку на мобилках */
+  }
+
+  .logo-title {
+    font-size: 2.5rem; /* Уменьшаем размер логотипа */
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+  }
+
+  /* 4. Статус-бар: разрешаем перенос элементов */
+  .status-bar {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .status-divider {
+    display: none; /* Скрываем палочки-разделители */
+  }
+
+  /* 5. Кнопки: вместо 2 колонок делаем 1 колонку */
+  .main-buttons-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .btn {
+    padding: 18px 20px;
+    border-radius: 20px;
+  }
+
+  .btn-text {
+    font-size: 1.3rem;
+  }
+
+  .btn-subtext {
+    font-size: 0.8rem;
+  }
+
+  /* 6. Telegram баннер: компактный вид */
+  .telegram-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .tg-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* 7. Подвал: перестраиваем строки в колонку */
+  .footer-content {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    font-size: 0.8rem;
+  }
+}
