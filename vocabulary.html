@@ -4,197 +4,238 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TilEM — Vocabulary</title>
-  <link rel="stylesheet" href="vocabulary.css">
+  <link rel="stylesheet" href="style.css?v=5">
+  <style>
+    /* Встроенные стили для модального окна и кнопки */
+    .vocab-header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .btn-add-word {
+      background: linear-gradient(135deg, #f39c12, #e67e22);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-add-word:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(230, 126, 34, 0.4);
+    }
+
+    /* Модальное окно */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modal-card h3 {
+      margin: 0;
+      color: #0f172a;
+    }
+
+    .modal-card input {
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .modal-card input:focus {
+      border-color: #00a896;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn-cancel {
+      background: #e2e8f0;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn-save {
+      background: #00a896;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Казахские орнаменты -->
+  <!-- Орнаменты -->
   <img src="Elements/ornament.png" class="ornament top-left" alt="Казахский орнамент">
   <img src="Elements/ornament.png" class="ornament top-right" alt="Казахский орнамент">
   <img src="Elements/ornament.png" class="ornament bottom-left" alt="Казахский орнамент">
   <img src="Elements/ornament.png" class="ornament bottom-right" alt="Казахский орнамент">
 
   <div class="app-viewport">
-
-    <!-- Шапка -->
+    
     <header class="top-header">
-
-      <a href="index.html" class="back-button">
-        ← Back to Main
-      </a>
-
+      <a href="index.html" class="back-btn">← Back to Main</a>
       <div class="header-logo">
         <h1 class="logo-title">Vocabulary</h1>
         <p class="subtitle">Learn new Kazakh words!</p>
       </div>
-
       <div class="header-spacer"></div>
-
     </header>
 
-    <!-- Информация -->
-    <section class="vocabulary-info">
-      <div>
-        <span class="info-title">My Vocabulary</span>
-        <span class="info-subtitle">15 saved words</span>
+    <section class="vocab-section">
+      <div class="vocab-header-flex">
+        <div class="vocab-title-block">
+          <h2>My Vocabulary</h2>
+          <span class="word-count-badge" id="wordCountBadge">0 words</span>
+        </div>
+        <!-- КНОПКА ДОБАВЛЕНИЯ -->
+        <button class="btn-add-word" id="openModalBtn">+ Add Word</button>
       </div>
 
-      <div class="word-count">
-        15 words
+      <!-- СЕТКА КАРТОЧЕК СЛОА -->
+      <div class="words-grid" id="wordsGrid">
+        <!-- Карточки выводятся с помощью JavaScript -->
       </div>
     </section>
 
-    <!-- Список слов -->
-    <main class="vocabulary-grid">
-
-      <div class="word-card">
-        <div class="word-number">01</div>
-        <div class="word-content">
-          <span class="english-word">Hello</span>
-          <span class="kazakh-word">Сәлем</span>
-          <span class="pronunciation">[Sälem]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">02</div>
-        <div class="word-content">
-          <span class="english-word">Thank you</span>
-          <span class="kazakh-word">Рақмет</span>
-          <span class="pronunciation">[Raqmet]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">03</div>
-        <div class="word-content">
-          <span class="english-word">Friend</span>
-          <span class="kazakh-word">Дос</span>
-          <span class="pronunciation">[Dos]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">04</div>
-        <div class="word-content">
-          <span class="english-word">Family</span>
-          <span class="kazakh-word">Отбасы</span>
-          <span class="pronunciation">[Otbasy]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">05</div>
-        <div class="word-content">
-          <span class="english-word">Home</span>
-          <span class="kazakh-word">Үй</span>
-          <span class="pronunciation">[Üy]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">06</div>
-        <div class="word-content">
-          <span class="english-word">School</span>
-          <span class="kazakh-word">Мектеп</span>
-          <span class="pronunciation">[Mektep]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">07</div>
-        <div class="word-content">
-          <span class="english-word">Book</span>
-          <span class="kazakh-word">Кітап</span>
-          <span class="pronunciation">[Kitap]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">08</div>
-        <div class="word-content">
-          <span class="english-word">Water</span>
-          <span class="kazakh-word">Су</span>
-          <span class="pronunciation">[Su]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">09</div>
-        <div class="word-content">
-          <span class="english-word">Food</span>
-          <span class="kazakh-word">Тамақ</span>
-          <span class="pronunciation">[Tamaq]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">10</div>
-        <div class="word-content">
-          <span class="english-word">Good</span>
-          <span class="kazakh-word">Жақсы</span>
-          <span class="pronunciation">[Jaqsy]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">11</div>
-        <div class="word-content">
-          <span class="english-word">Beautiful</span>
-          <span class="kazakh-word">Әдемі</span>
-          <span class="pronunciation">[Ädemi]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">12</div>
-        <div class="word-content">
-          <span class="english-word">Today</span>
-          <span class="kazakh-word">Бүгін</span>
-          <span class="pronunciation">[Bügin]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">13</div>
-        <div class="word-content">
-          <span class="english-word">Tomorrow</span>
-          <span class="kazakh-word">Ертең</span>
-          <span class="pronunciation">[Erteñ]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">14</div>
-        <div class="word-content">
-          <span class="english-word">Love</span>
-          <span class="kazakh-word">Махаббат</span>
-          <span class="pronunciation">[Mahabbat]</span>
-        </div>
-      </div>
-
-      <div class="word-card">
-        <div class="word-number">15</div>
-        <div class="word-content">
-          <span class="english-word">Opinion</span>
-          <span class="kazakh-word">Лебіз</span>
-          <span class="pronunciation">[Lebiz]</span>
-        </div>
-      </div>
-
-    </main>
-
   </div>
 
-  <!-- Footer -->
-  <footer class="footer-bar">
-    <div class="footer-content">
-      <span class="footer-item">📧 supportTilEM@gmail.com</span>
-      <span class="footer-item footer-error">Found a mistake? Let us know!</span>
-      <span class="footer-item">📞 +7 (707) 493-00-75</span>
+  <!-- МОДАЛЬНОЕ ОКНО -->
+  <div class="modal-overlay" id="addWordModal">
+    <div class="modal-card">
+      <h3>Add New Word</h3>
+      <input type="text" id="inputKazakh" placeholder="Kazakh word (e.g. Кітап)">
+      <input type="text" id="inputTrans" placeholder="Transcription (e.g. [Kitap])">
+      <input type="text" id="inputEnglish" placeholder="English translation (e.g. Book)">
+      <div class="modal-actions">
+        <button class="btn-cancel" id="closeModalBtn">Cancel</button>
+        <button class="btn-save" id="saveWordBtn">Save</button>
+      </div>
     </div>
-  </footer>
+  </div>
 
+  <script>
+    // Начальный список слов из вашего интерфейса
+    const defaultWords = [
+      { english: 'Hello', kazakh: 'Сәлем', trans: '[Salem]' },
+      { english: 'Thank you', kazakh: 'Рақмет', trans: '[Raqmet]' },
+      { english: 'Friend', kazakh: 'Дос', trans: '[Dos]' },
+      { english: 'Family', kazakh: 'Отбасы', trans: '[Otpasy]' },
+      { english: 'Home', kazakh: 'Үй', trans: '[Uy]' },
+      { english: 'School', kazakh: 'Мектеп', trans: '[Mektep]' },
+      { english: 'Book', kazakh: 'Кітап', trans: '[Kitap]' },
+      { english: 'Water', kazakh: 'Су', trans: '[Su]' },
+      { english: 'Food', kazakh: 'Тамақ', trans: '[Tamaq]' },
+      { english: 'Good', kazakh: 'Жақсы', trans: '[Zhaqsy]' },
+      { english: 'Beautiful', kazakh: 'Әдемі', trans: '[Ademi]' },
+      { english: 'Today', kazakh: 'Бүгін', trans: '[Bugin]' }
+    ];
+
+    function getWords() {
+      const stored = localStorage.getItem('tilem_vocab_list');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+      localStorage.setItem('tilem_vocab_list', JSON.stringify(defaultWords));
+      return defaultWords;
+    }
+
+    function renderGrid() {
+      const words = getWords();
+      const grid = document.getElementById('wordsGrid');
+      const badge = document.getElementById('wordCountBadge');
+      
+      badge.textContent = `${words.length} words`;
+      grid.innerHTML = '';
+
+      words.forEach((item, index) => {
+        const num = String(index + 1).padStart(2, '0');
+        const card = document.createElement('div');
+        card.className = 'word-card';
+        card.innerHTML = `
+          <div class="card-left">
+            <span class="word-num">${num}</span>
+          </div>
+          <div class="card-content">
+            <span class="word-en">${item.english}</span>
+            <span class="word-kk">${item.kazakh}</span>
+            <span class="word-tr">${item.trans || ''}</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Логика модального окна
+    const modal = document.getElementById('addWordModal');
+    
+    document.getElementById('openModalBtn').onclick = () => modal.classList.add('active');
+    document.getElementById('closeModalBtn').onclick = () => modal.classList.remove('active');
+
+    document.getElementById('saveWordBtn').onclick = () => {
+      const kk = document.getElementById('inputKazakh').value.trim();
+      const tr = document.getElementById('inputTrans').value.trim();
+      const en = document.getElementById('inputEnglish').value.trim();
+
+      if (!kk || !en) {
+        alert('Please fill in Kazakh word and English translation!');
+        return;
+      }
+
+      const words = getWords();
+      words.unshift({ english: en, kazakh: kk, trans: tr ? `[${tr.replace(/[\[\]]/g, '')}]` : '' });
+      localStorage.setItem('tilem_vocab_list', JSON.stringify(words));
+
+      // Очистка и закрытие
+      document.getElementById('inputKazakh').value = '';
+      document.getElementById('inputTrans').value = '';
+      document.getElementById('inputEnglish').value = '';
+      modal.classList.remove('active');
+
+      renderGrid();
+    };
+
+    renderGrid();
+  </script>
 </body>
 </html>
-```

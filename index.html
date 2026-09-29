@@ -51,9 +51,12 @@
 
       <div class="status-divider"></div>
 
+      <!-- Динамический блок Word of the day -->
       <div class="status-item wod">
         <span class="wod-badge-sm">Word of the day</span>
-        <span class="status-text"><strong>Лебіз</strong> <i>[Lebiz]</i> — Opinion</span>
+        <span class="status-text" id="wod-container">
+          <!-- Сюда JavaScript подставит текущее слово дня -->
+        </span>
       </div>
     </section>
 
@@ -102,7 +105,7 @@
       </a>
 
       <!-- Кликабельная карточка Progress -->
-      <a href="progress.html?v=1" class="btn btn-orange">
+      <a href="progress.html" class="btn btn-orange">
         <div class="btn-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
@@ -151,6 +154,50 @@
       <span class="footer-item">📞 +7 (707) 493-00-75</span>
     </div>
   </footer>
+
+  <!-- Скрипт для автоматической смены слов каждый день -->
+  <script>
+    const wordsList = [
+      { word: 'Лебіз', transcription: 'Lebiz', translation: 'Opinion' },
+      { word: 'Рақмет', transcription: 'Rakhmet', translation: 'Thank you' },
+      { word: 'Сәлем', transcription: 'Salem', translation: 'Hello' },
+      { word: 'Қайырлы таң', transcription: 'Qaiyrly tang', translation: 'Good morning' },
+      { word: 'Отбасы', transcription: 'Otpasy', translation: 'Family' },
+      { word: 'Дос', transcription: 'Dos', translation: 'Friend' },
+      { word: 'Білім', transcription: 'Bilim', translation: 'Knowledge' },
+      { word: 'Бақыт', transcription: 'Baqyt', translation: 'Happiness' },
+      { word: 'Ел', transcription: 'El', translation: 'Country' },
+      { word: 'Үміт', transcription: 'Umit', translation: 'Hope' },
+      { word: 'Отан', transcription: 'Otan', translation: 'Homeland' },
+      { word: 'Өнер', transcription: 'Oner', translation: 'Art' },
+      { word: 'Кітап', transcription: 'Kitap', translation: 'Book' },
+      { word: 'Уақыт', transcription: 'Waqyt', translation: 'Time' },
+      { word: 'Арман', transcription: 'Arman', translation: 'Dream' },
+      { word: 'Табиғат', transcription: 'Tabighat', translation: 'Nature' },
+      { word: 'Жүрек', transcription: 'Zhurek', translation: 'Heart' },
+      { word: 'Мұғалім', transcription: 'Mughalim', translation: 'Teacher' },
+      { word: 'Сүйіспеншілік', transcription: 'Suispenshilik', translation: 'Love' },
+      { word: 'Жеңіс', transcription: 'Zhengis', translation: 'Victory' }
+    ];
+
+    function updateWordOfTheDay() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 0);
+      const diff = now - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const dayOfYear = Math.floor(diff / oneDay);
+
+      const wordIndex = dayOfYear % wordsList.length;
+      const todayWord = wordsList[wordIndex];
+
+      const wodContainer = document.getElementById('wod-container');
+      if (wodContainer) {
+        wodContainer.innerHTML = `<strong>${todayWord.word}</strong> <i>[${todayWord.transcription}]</i> — ${todayWord.translation}`;
+      }
+    }
+
+    updateWordOfTheDay();
+  </script>
 
 </body>
 </html>
