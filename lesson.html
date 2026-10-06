@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TilEM — Lesson</title>
+  <link rel="stylesheet" href="lessons.css?v=2">
+</head>
+<body>
+
+  <!-- Орнаменты -->
+  <img src="Elements/ornament.png" class="ornament top-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament top-right" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-right" alt="Kazakh ornament">
+
+  <div class="app-viewport">
+
+    <header class="top-header">
+      <a href="lessons.html" class="back-link">← Lessons</a>
+
+      <div class="header-logo">
+        <h1 class="logo-title" id="lessonTitle">Lesson</h1>
+        <p class="subtitle" id="lessonSubtitle"></p>
+      </div>
+
+      <div class="header-profile">
+        <div class="avatar">О</div>
+        <div class="user-info">
+          <span class="greeting-sub">Сәлем! 👋</span>
+          <span class="user-name">Оралхан</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="lesson-card">
+      <div class="lesson-progress">
+        <div class="progress-track">
+          <div class="progress-fill" id="stepFill"></div>
+        </div>
+        <span class="step-label" id="stepLabel"></span>
+      </div>
+
+      <div id="stage"></div>
+    </section>
+
+  </div>
+
+  <footer class="footer-bar">
+    <div class="footer-content">
+      <span class="footer-item">📧 supportTilEM@gmail.com</span>
+      <span class="footer-item footer-error">Found a mistake? Let us know!</span>
+      <span class="footer-item">📞 +7 (707) 493-00-75</span>
+    </div>
+  </footer>
+
+  <script src="words-db.js"></script>
+  <script src="lessons-db.js"></script>
+  <script src="lesson.js"></script>
+</body>
+</html>

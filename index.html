@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TilEM — Let's learn together!</title>
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 
@@ -16,7 +16,7 @@
 
   <!-- Главный контейнер -->
   <div class="app-viewport">
-    
+
     <!-- Шапка сайта -->
     <header class="top-header">
       <div class="header-profile">
@@ -44,19 +44,18 @@
 
       <div class="status-divider"></div>
 
+      <!-- XP и уровень: подставляет JS -->
       <div class="status-item xp">
         <span class="status-icon">⚡</span>
-        <span class="status-text"><strong>1,250 XP</strong> • Level 5</span>
+        <span class="status-text" id="xp-container"><strong>0 XP</strong> • Level 1</span>
       </div>
 
       <div class="status-divider"></div>
 
-      <!-- Динамический блок Word of the day -->
+      <!-- Слово дня -->
       <div class="status-item wod">
         <span class="wod-badge-sm">Word of the day</span>
-        <span class="status-text" id="wod-container">
-          <!-- Сюда JavaScript подставит текущее слово дня -->
-        </span>
+        <span class="status-text" id="wod-container"></span>
       </div>
     </section>
 
@@ -72,7 +71,7 @@
         </div>
         <div class="btn-content">
           <span class="btn-text">Lessons</span>
-          <span class="btn-subtext">4 new topics available</span>
+          <span class="btn-subtext" id="lessons-sub">Start learning</span>
         </div>
       </a>
 
@@ -100,11 +99,10 @@
         </div>
         <div class="btn-content">
           <span class="btn-text">Vocabulary</span>
-          <span class="btn-subtext">100 saved words</span>
+          <span class="btn-subtext" id="vocab-sub">Your saved words</span>
         </div>
       </a>
 
-      <!-- Кликабельная карточка Progress -->
       <a href="progress.html" class="btn btn-orange">
         <div class="btn-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -118,7 +116,7 @@
         </div>
         <div class="btn-content">
           <span class="btn-text">Progress</span>
-          <span class="btn-subtext">Level A1 • 47% completed</span>
+          <span class="btn-subtext" id="progress-sub">Level A1 • 0% completed</span>
         </div>
       </a>
 
@@ -155,7 +153,46 @@
     </div>
   </footer>
 
-  <!-- Скрипт для автоматической смены слов каждый день -->
+  <!-- Данные: слова и темы (нужны, чтобы знать, сколько всего уроков) -->
+  <script src="words-db.js"></script>
+  <script src="lessons-db.js"></script>
+
+  <!-- Живые цифры на главной -->
+  <script>
+    const XP_PER_LEVEL = 50; // каждые 50 XP = новый уровень
+
+    function updateDashboard() {
+      // 1. Прогресс уроков (читаем тот же сейф, что и Lessons/Progress)
+      const progress = loadProgress();
+      const doneCount = TOPICS.filter(t => progress.done[t.id]).length;
+      const leftCount = TOPICS.length - doneCount;
+      const percent = Math.round(doneCount / TOPICS.length * 100);
+      const level = Math.floor(progress.xp / XP_PER_LEVEL) + 1;
+
+      // 2. Сколько слов в словаре
+      // (если словарь ещё ни разу не открывали, на его странице будут 12 стандартных слов)
+      let vocabCount = 12;
+      try {
+        const saved = JSON.parse(localStorage.getItem('tilem_vocab_exact'));
+        if (Array.isArray(saved)) vocabCount = saved.length;
+      } catch (e) {}
+
+      // 3. Подставляем на страницу
+      document.getElementById('xp-container').innerHTML =
+        `<strong>${progress.xp.toLocaleString('en-US')} XP</strong> • Level ${level}`;
+
+      document.getElementById('lessons-sub').textContent = leftCount > 0
+        ? `${leftCount} new topic${leftCount === 1 ? '' : 's'} available`
+        : 'All lessons completed 🎉';
+
+      document.getElementById('vocab-sub').textContent = `${vocabCount} saved words`;
+      document.getElementById('progress-sub').textContent = `Level A1 • ${percent}% completed`;
+    }
+
+    updateDashboard();
+  </script>
+
+  <!-- Слово дня (меняется каждый день) -->
   <script>
     const wordsList = [
       { word: 'Лебіз', transcription: 'Lebiz', translation: 'Opinion' },
@@ -187,8 +224,7 @@
       const oneDay = 1000 * 60 * 60 * 24;
       const dayOfYear = Math.floor(diff / oneDay);
 
-      const wordIndex = dayOfYear % wordsList.length;
-      const todayWord = wordsList[wordIndex];
+      const todayWord = wordsList[dayOfYear % wordsList.length];
 
       const wodContainer = document.getElementById('wod-container');
       if (wodContainer) {

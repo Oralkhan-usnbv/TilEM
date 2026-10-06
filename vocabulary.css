@@ -2,13 +2,19 @@
   font-family: 'Garet';
   src: url('assets/Garet-Book.ttf') format('truetype');
   font-weight: 400;
+  font-style: normal;
 }
 
 @font-face {
   font-family: 'Garet-Heavy';
   src: url('assets/Garet-Heavy.ttf') format('truetype');
   font-weight: 800;
+  font-style: normal;
 }
+
+/* =========================
+   GENERAL
+   ========================= */
 
 * {
   margin: 0;
@@ -20,248 +26,317 @@
 body {
   background: linear-gradient(180deg, #f0f4f8 0%, #cbd5e1 100%);
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-/* Орнаменты */
+/* =========================
+   ORNAMENTS
+   ========================= */
+
 .ornament {
-  position: absolute;
-  width: clamp(70px, 12vw, 150px);
-  height: clamp(70px, 12vw, 150px);
+  position: fixed;
+  width: 240px;
+  height: 240px;
   object-fit: contain;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
   mix-blend-mode: multiply;
-  opacity: 0.85;
 }
 
-.top-left { top: 0; left: 0; }
-.top-right { top: 0; right: 0; transform: scaleX(-1); }
-.bottom-left { bottom: 60px; left: 0; transform: scaleY(-1); }
-.bottom-right { bottom: 60px; right: 0; transform: scale(-1, -1); }
+.top-left     { top: 0;    left: 0; }
+.top-right    { top: 0;    right: 0; transform: scaleX(-1); }
+.bottom-left  { bottom: 0; left: 0;  transform: scaleY(-1); }
+.bottom-right { bottom: 0; right: 0; transform: scale(-1, -1); }
 
-/* Контейнер приложения */
+/* =========================
+   PAGE
+   ========================= */
+
 .app-viewport {
-  max-width: 800px;
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
   width: 100%;
   margin: 0 auto;
-  padding: clamp(12px, 3vw, 24px);
+  padding: 28px 20px 30px;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  z-index: 2;
 }
 
-/* Header */
+/* =========================
+   HEADER
+   ========================= */
+
 .top-header {
   display: grid;
-  grid-template-columns: 180px 1fr 180px;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   width: 100%;
-  margin-bottom: 24px;
   gap: 12px;
+  margin-bottom: 22px;
 }
 
-.header-profile {
+.header-left {
   display: flex;
+  justify-content: flex-start;
+}
+
+.back-link {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  color: #0f172a;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(8px);
-  padding: 6px 12px;
-  border-radius: 18px;
-  width: fit-content;
+  padding: 11px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.avatar {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, #00a896, #028090);
-  color: #fff;
-  font-family: 'Garet-Heavy', sans-serif;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.back-link:hover {
+  transform: translateX(-3px);
+  background: #ffffff;
 }
 
-.user-info { display: flex; flex-direction: column; }
-.greeting-sub { font-size: 0.7rem; color: #64748b; }
-.user-name { font-family: 'Garet-Heavy', sans-serif; font-size: 0.88rem; color: #0f172a; }
+.header-logo {
+  text-align: center;
+}
 
-.header-logo { text-align: center; }
 .logo-title {
   font-family: 'Garet-Heavy', sans-serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  background: linear-gradient(180deg, #f39c12 0%, #e67e22 100%);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  letter-spacing: 1px;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffd700 0%, #e6a100 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  line-height: 1;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
 }
 
-.subtitle { font-size: 0.95rem; font-weight: 700; color: #e67e22; margin-top: 4px; }
-
-.back-button {
-  justify-self: end;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 14px;
-  text-decoration: none;
-  color: #334155;
-  font-size: 0.85rem;
-  font-family: 'Garet-Heavy', sans-serif;
-  transition: transform 0.2s ease;
+.subtitle {
+  font-size: clamp(0.8rem, 1.8vw, 1.1rem);
+  font-weight: 700;
+  color: #f39c12;
+  margin-top: 6px;
 }
 
-.back-button:hover { transform: translateX(-3px); }
+/* =========================
+   MY VOCABULARY BLOCK
+   ========================= */
 
-/* Кнопка добавления нового слова */
-.vocab-actions {
+.vocab-summary {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  padding: 20px 26px;
+  margin-bottom: 18px;
+}
+
+.section-title {
+  font-family: 'Garet-Heavy', sans-serif;
+  font-size: 1.35rem;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.vocab-summary-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.words-badge {
+  background: #f4a261;
+  color: #ffffff;
+  font-family: 'Garet-Heavy', sans-serif;
+  font-size: 0.9rem;
+  padding: 8px 18px;
+  border-radius: 20px;
+  white-space: nowrap;
 }
 
 .btn-add-word {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 22px;
-  background: linear-gradient(135deg, #e67e22, #f39c12);
-  color: white;
+  background: #00a896;
+  color: #ffffff;
   border: none;
-  border-radius: 16px;
   font-family: 'Garet-Heavy', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  padding: 8px 18px;
+  border-radius: 20px;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(230, 126, 34, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 .btn-add-word:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(230, 126, 34, 0.45);
+  background: #028090;
+  transform: translateY(-1px);
 }
 
-.plus-icon { font-size: 1.2rem; line-height: 1; }
+/* =========================
+   CARDS GRID
+   ========================= */
 
-/* Список слов (столбец) */
-.vocabulary-container { width: 100%; }
-
-.words-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
 }
 
-.word-card {
+.vocab-card {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: rgba(255, 255, 255, 0.9);
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
-  padding: 16px 20px;
-  border-radius: 18px;
+  border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-  position: relative;
-  transition: transform 0.2s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  padding: 22px 22px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.word-card:hover { transform: translateX(4px); }
-
-.word-main {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
+.vocab-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.09);
 }
 
-.kazakh-word {
+.vocab-num {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  background: #00a896;
+  color: #ffffff;
   font-family: 'Garet-Heavy', sans-serif;
-  font-size: 1.15rem;
-  color: #0f172a;
-}
-
-.transcription {
-  font-size: 0.9rem;
-  color: #64748b;
-  font-style: italic;
-}
-
-.word-translation {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #d97706;
-  margin-right: 28px;
-}
-
-.btn-delete {
-  background: none;
-  border: none;
-  color: #cbd5e1;
-  font-size: 1.4rem;
-  cursor: pointer;
-  padding: 0 6px;
-  transition: color 0.2s ease;
-}
-
-.btn-delete:hover { color: #ef4444; }
-
-/* Модальное окно */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(4px);
+  font-size: 0.85rem;
+  border-radius: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.vocab-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.vocab-en {
+  font-size: 1.2rem;
+  color: #0f172a;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vocab-kk {
+  font-size: 1.15rem;
+  color: #00a896;
+  line-height: 1.25;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vocab-tr {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+/* Кнопка удаления слова (появляется при наведении) */
+
+.btn-delete-word {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  z-index: 100;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.vocab-card:hover .btn-delete-word {
+  opacity: 1;
+}
+
+.btn-delete-word:hover {
+  color: #ef4444;
+}
+
+/* =========================
+   MODAL
+   ========================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
 
 .modal-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
+  display: flex;
 }
 
 .modal-card {
   background: #ffffff;
-  padding: 28px;
-  border-radius: 24px;
+  padding: 26px;
+  border-radius: 20px;
   width: 90%;
-  max-width: 420px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  max-width: 380px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
-.modal-title {
+.modal-card h3 {
   font-family: 'Garet-Heavy', sans-serif;
   color: #0f172a;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-group label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #64748b;
-}
-
-.form-group input {
-  padding: 10px 14px;
+.modal-card input {
+  padding: 11px 14px;
   border: 1.5px solid #e2e8f0;
   border-radius: 12px;
   font-size: 0.95rem;
@@ -269,44 +344,52 @@ body {
   transition: border-color 0.2s ease;
 }
 
-.form-group input:focus {
-  border-color: #f39c12;
+.modal-card input:focus {
+  border-color: #00a896;
 }
 
-.modal-buttons {
+.modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 8px;
+  gap: 8px;
+  margin-top: 6px;
 }
 
 .btn-cancel {
-  padding: 10px 18px;
   background: #f1f5f9;
   border: none;
+  padding: 10px 18px;
   border-radius: 12px;
   color: #64748b;
-  font-weight: 600;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .btn-save {
-  padding: 10px 20px;
-  background: #e67e22;
+  background: #00a896;
+  color: #ffffff;
   border: none;
+  padding: 10px 20px;
   border-radius: 12px;
-  color: white;
   font-family: 'Garet-Heavy', sans-serif;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
-/* Подвал */
+.btn-save:hover {
+  background: #028090;
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+
 .footer-bar {
   width: 100%;
   background-color: #1e293b;
-  padding: 14px 24px;
+  padding: 16px 28px;
+  position: relative;
   z-index: 10;
-  margin-top: 30px;
 }
 
 .footer-content {
@@ -316,16 +399,148 @@ body {
   justify-content: space-between;
   align-items: center;
   color: #94a3b8;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.footer-error { color: #e2e8f0; font-weight: 600; }
+.footer-error {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+  .vocab-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 @media (max-width: 600px) {
-  .top-header { display: flex; flex-direction: column; }
-  .back-button { align-self: flex-end; }
-  .word-card { flex-direction: column; align-items: flex-start; gap: 6px; }
-  .word-translation { margin-right: 0; }
-  .btn-delete { position: absolute; top: 12px; right: 12px; }
-  .footer-content { flex-direction: column; gap: 8px; text-align: center; }
+  .ornament {
+    width: 90px;
+    height: 90px;
+    opacity: 0.6;
+  }
+
+  .app-viewport {
+    padding: 16px 12px 24px;
+  }
+
+  .top-header {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .header-left {
+    justify-self: start;
+  }
+
+  .vocab-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 18px;
+  }
+
+  .vocab-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+/* =========================
+   SEARCH IN MODAL
+   ========================= */
+
+.modal-card {
+  max-width: 440px;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.search-hint {
+  padding: 18px 8px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 14px;
+  background: #f8fafc;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.search-item:hover {
+  background: #e6f7f5;
+  border-color: #00a896;
+}
+
+.search-item-main {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.search-kk {
+  font-family: 'Garet-Heavy', sans-serif;
+  font-size: 1.05rem;
+  color: #00a896;
+}
+
+.search-tr {
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.search-en {
+  font-size: 0.9rem;
+  color: #334155;
+  text-align: right;
+}
+
+.search-item-added {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.search-item-added:hover {
+  background: #f8fafc;
+  border-color: transparent;
+}
+
+/* Подсветка только что добавленного слова */
+.vocab-card-new {
+  animation: newWordFlash 1.8s ease;
+}
+
+@keyframes newWordFlash {
+  0%, 60% {
+    box-shadow: 0 0 0 3px #00a896, 0 10px 22px rgba(0, 168, 150, 0.25);
+  }
+  100% {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  }
 }

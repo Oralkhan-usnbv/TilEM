@@ -4,22 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TilEM — Progress</title>
-  <link rel="stylesheet" href="progress.css">
+  <link rel="stylesheet" href="progress.css?v=2">
 </head>
 <body>
 
   <!-- Орнаменты -->
-  <img src="Elements/ornament.png" class="ornament top-left" alt="Казахский орнамент">
-  <img src="Elements/ornament.png" class="ornament top-right" alt="Казахский орнамент">
-  <img src="Elements/ornament.png" class="ornament bottom-left" alt="Казахский орнамент">
-  <img src="Elements/ornament.png" class="ornament bottom-right" alt="Казахский орнамент">
+  <img src="Elements/ornament.png" class="ornament top-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament top-right" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-right" alt="Kazakh ornament">
 
   <div class="app-viewport">
 
-    <!-- Шапка страницы -->
+    <!-- Шапка: Home слева, заголовок по центру, профиль справа -->
     <header class="top-header">
-      
-      <!-- Аватарка профиля слева сверху -->
+
+      <a href="index.html" class="back-link">← Home</a>
+
+      <div class="header-logo">
+        <h1 class="logo-title">Your progress</h1>
+        <p class="subtitle">Make it better</p>
+      </div>
+
       <div class="header-profile">
         <div class="avatar">О</div>
         <div class="user-info">
@@ -28,61 +34,36 @@
         </div>
       </div>
 
-      <div class="header-logo">
-        <h1 class="logo-title">Your progress</h1>
-        <p class="subtitle">Make it better</p>
-      </div>
-
-      <!-- Кнопка Назад справа -->
-      <a href="index.html" class="back-button">
-        ← Main Menu
-      </a>
-
     </header>
 
-    <!-- Главный блок прогресса -->
     <main class="progress-container">
-      
-      <!-- Секция с заполнением шкалы -->
+
+      <!-- Шкала (процент подставляет JS) -->
       <section class="progress-bar-card">
         <div class="progress-track">
-          <!-- Процент в CSS задается через --progress: 47% -->
-          <div class="progress-fill" style="--progress: 47%;"></div>
+          <div class="progress-fill" id="progressFill" style="--progress: 0%;"></div>
         </div>
-        <div class="progress-percentage">47%</div>
+        <div class="progress-percentage" id="progressPercent">0%</div>
       </section>
 
-      <!-- Темы: Пройденные и Предстоящие -->
+      <!-- Темы -->
       <section class="themes-grid">
 
-        <!-- Learned themes -->
         <div class="themes-column learned-box">
           <h2 class="themes-title">Learned themes</h2>
-          <ul class="themes-list">
-            <li><a href="lessons.html?topic=greetings" class="theme-link learned"><span class="check-icon">✓</span> Greetings</a></li>
-            <li><a href="lessons.html?topic=family" class="theme-link learned"><span class="check-icon">✓</span> Family</a></li>
-            <li><a href="lessons.html?topic=travel" class="theme-link learned"><span class="check-icon">✓</span> Travel</a></li>
-            <li><a href="lessons.html?topic=food" class="theme-link learned"><span class="check-icon">✓</span> Food</a></li>
-          </ul>
+          <ul class="themes-list" id="learnedList"></ul>
         </div>
 
-        <!-- Кнопка Next Lesson по центру -->
         <div class="next-lesson-center">
-          <a href="lessons.html" class="btn-next-lesson">
-            <span class="next-text">NEXT LESSON</span>
+          <a href="lessons.html" class="btn-next-lesson" id="nextLessonBtn">
+            <span class="next-text" id="nextText">NEXT LESSON</span>
             <span class="next-arrow">→</span>
           </a>
         </div>
 
-        <!-- Next themes -->
         <div class="themes-column next-box">
           <h2 class="themes-title">Next themes</h2>
-          <ul class="themes-list">
-            <li><a href="lessons.html?topic=nuclear-physic" class="theme-link next"><span class="lock-icon">🔒</span> Nuclear physic</a></li>
-            <li><a href="lessons.html?topic=demographic" class="theme-link next"><span class="lock-icon">🔒</span> Demographic</a></li>
-            <li><a href="lessons.html?topic=school" class="theme-link next"><span class="lock-icon">🔒</span> School</a></li>
-            <li><a href="lessons.html?topic=culture" class="theme-link next"><span class="lock-icon">🔒</span> Culture</a></li>
-          </ul>
+          <ul class="themes-list" id="nextList"></ul>
         </div>
 
       </section>
@@ -91,7 +72,6 @@
 
   </div>
 
-  <!-- Подвал сайта -->
   <footer class="footer-bar">
     <div class="footer-content">
       <span class="footer-item">📧 supportTilEM@gmail.com</span>
@@ -100,5 +80,42 @@
     </div>
   </footer>
 
+  <script src="words-db.js"></script>
+  <script src="lessons-db.js"></script>
+  <script>
+    const p = loadProgress();                              // читаем сохранённый прогресс
+    const done = TOPICS.filter(t => p.done[t.id]);         // пройденные темы
+    const todo = TOPICS.filter(t => !p.done[t.id]);        // непройденные темы
+    const percent = Math.round(done.length / TOPICS.length * 100);
+
+    // Шкала и процент
+    document.getElementById('progressFill').style.setProperty('--progress', percent + '%');
+    document.getElementById('progressPercent').textContent = percent + '%';
+
+    // Learned themes
+    document.getElementById('learnedList').innerHTML = done.length
+      ? done.map(t => `
+          <li><a href="lesson.html?topic=${t.id}" class="theme-link learned">
+            <span class="check-icon">✓</span> ${t.title}
+          </a></li>`).join('')
+      : '<li><span class="theme-link next">No lessons completed yet</span></li>';
+
+    // Next themes
+    document.getElementById('nextList').innerHTML = todo.length
+      ? todo.map(t => `
+          <li><a href="lesson.html?topic=${t.id}" class="theme-link next">
+            <span class="lock-icon">${t.icon}</span> ${t.title}
+          </a></li>`).join('')
+      : '<li><span class="theme-link learned"><span class="check-icon">✓</span> All topics completed!</span></li>';
+
+    // Кнопка NEXT LESSON ведёт на первую непройденную тему
+    const nextBtn = document.getElementById('nextLessonBtn');
+    if (todo.length) {
+      nextBtn.href = 'lesson.html?topic=' + todo[0].id;
+    } else {
+      nextBtn.href = 'lessons.html';
+      document.getElementById('nextText').textContent = 'ALL DONE 🎉';
+    }
+  </script>
 </body>
 </html>

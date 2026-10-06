@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scenarioSelect = document.getElementById('scenarioSelect');
   const micBtn = document.getElementById('micBtn');
 
-  // Начальные приветствия бота под каждый сценарий
+  // Первые фразы
   const initialBotMessages = {
     ordering: 'Сәлем! Ресторанымызға кош келдіңіз! Не тапсырыс бересіз?',
     greeting: 'Сәлем! Менің атым TilEM Bot. Сенің атың кім?',
@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
     shopping: 'Сәлеметсіз бе! Сізге қалай көмектесе аламын?'
   };
 
-  // Автоматическая прокрутка вниз
+  // Прокрутка
   function scrollToBottom() {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
-  // Добавление нового сообщения в чат
+  // Новое сообщение
   function appendMessage(sender, text, isAi = false) {
     const msgDiv = document.createElement('div');
     msgDiv.classList.add('message', isAi ? 'ai-message' : 'user-message');
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollToBottom();
   }
 
-  // Обработка отправки сообщения пользователем
+  // Ответ бота
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const userText = answerInput.value.trim();
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     appendMessage('Оралхан', userText, false);
     answerInput.value = '';
 
-    // 2. Имитация ответа AI (Mock Data)
+    // 2. Имитация ответа
     setTimeout(() => {
       appendMessage('TilEM Bot', 'Жақсы! Тағы не айтқыңыз келеді? (Great! What else would you like to say?)', true);
     }, 1000);

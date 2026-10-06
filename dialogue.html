@@ -4,95 +4,96 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dialogue — TilEM</title>
-
   <link rel="stylesheet" href="dialogue.css">
 </head>
-
 <body>
 
   <!-- Орнаменты -->
-  <img src="Elements/ornament.png"
-       class="ornament top-left"
-       alt="Kazakh ornament">
-
-  <img src="Elements/ornament.png"
-       class="ornament top-right"
-       alt="Kazakh ornament">
-
-  <img src="Elements/ornament.png"
-       class="ornament bottom-left"
-       alt="Kazakh ornament">
-
-  <img src="Elements/ornament.png"
-       class="ornament bottom-right"
-       alt="Kazakh ornament">
-
+  <img src="Elements/ornament.png" class="ornament top-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament top-right" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-right" alt="Kazakh ornament">
 
   <main class="dialogue-page">
 
-    <!-- Название страницы -->
-    <header class="dialogue-header">
-      <h1>Dialogue</h1>
-      <p>Practice your speaking skills</p>
+    <!-- Верхняя панель навигации -->
+    <header class="dialogue-top-bar">
+      <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Home</span>
+      </a>
+
+      <div class="header-logo-sm">
+        <h1 class="logo-title-sm">TilEM</h1>
+      </div>
+
+      <div class="header-profile-sm">
+        <div class="avatar-sm">О</div>
+      </div>
     </header>
 
-
-    <!-- Сценарий -->
-    <section class="scenario-bar">
-      <span>Scenario: <strong>Ordering food</strong></span>
+    <!-- Заголовок страницы -->
+    <section class="dialogue-header">
+      <h1>Speaking Practice</h1>
+      <p>Practice Kazakh in real-life scenarios</p>
     </section>
 
+    <!-- Переключатель/Индикатор сценария -->
+    <section class="scenario-bar">
+      <span>Scenario: 
+        <select id="scenarioSelect" class="scenario-dropdown">
+          <option value="ordering" selected>Ordering food (Тамаққа тапсырыс беру)</option>
+          <option value="greeting">Meeting new people (Танысу)</option>
+          <option value="directions">Asking for directions (Жол сұрау)</option>
+          <option value="shopping">At the store (Дүкенде)</option>
+        </select>
+      </span>
+    </section>
 
-    <!-- Основной блок -->
+    <!-- Основной блок диалога -->
     <section class="dialogue-box">
 
-      <!-- Здесь позже можно выводить сообщения -->
-      <div class="messages">
-
+      <div class="messages" id="messagesContainer">
         <div class="message ai-message">
-          <span class="message-name">TilEM</span>
-          <p>Hello! Welcome to our restaurant. What would you like to order?</p>
+          <span class="message-name">TilEM Bot</span>
+          <p>Сәлем! Ресторанымызға кош келдіңіз! Не тапсырыс бересіз? (Hello! Welcome to our restaurant. What would you like to order?)</p>
         </div>
-
       </div>
-
 
       <!-- Поле ответа -->
-      <div class="answer-area">
-
-        <input
-          type="text"
-          placeholder="Your answer"
+      <form class="answer-area" id="chatForm">
+        <input 
+          type="text" 
+          placeholder="Write your response in Kazakh..." 
           id="answerInput"
+          autocomplete="off"
         >
 
-        <button class="microphone-button" type="button" aria-label="Microphone">
-
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-
-            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-
-            <line x1="12" y1="19" x2="12" y2="22"></line>
-
-            <line x1="8" y1="22" x2="16" y2="22"></line>
-
+        <button class="send-button" type="submit" id="sendBtn" title="Send message">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
-
         </button>
 
-      </div>
+        <button class="microphone-button" type="button" id="micBtn" aria-label="Microphone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="22"></line>
+            <line x1="8" y1="22" x2="16" y2="22"></line>
+          </svg>
+        </button>
+      </form>
 
     </section>
 
   </main>
 
+  <!-- JS логика для работы чата -->
+  <script src="dialogue.js"></script>
 </body>
 </html>

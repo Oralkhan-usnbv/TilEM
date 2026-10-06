@@ -530,3 +530,115 @@ body {
   }
 
 }
+/* =========================
+   TOP NAV BAR & BACK LINK
+   ========================= */
+
+.dialogue-top-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #0f172a;
+  font-family: 'Garet-Heavy', sans-serif;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 8px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.back-link:hover {
+  transform: translateX(-3px);
+  background: rgba(255, 255, 255, 1);
+}
+
+.back-link svg {
+  width: 18px;
+  height: 18px;
+  stroke: #0f172a;
+}
+
+.logo-title-sm {
+  font-family: 'Garet-Heavy', sans-serif;
+  font-size: 1.8rem;
+  background: linear-gradient(180deg, #ffd700 0%, #e6a100 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.avatar-sm {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #00a896, #028090);
+  color: #ffffff;
+  font-family: 'Garet-Heavy', sans-serif;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dropdown выбора сценария */
+.scenario-dropdown {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-family: 'Garet-Heavy', sans-serif;
+  color: #0f172a;
+  font-size: 0.95rem;
+  outline: none;
+  cursor: pointer;
+}
+
+/* =========================
+   USER MESSAGES & BUTTONS
+   ========================= */
+
+.user-message {
+  background: #00a896;
+  color: #ffffff;
+  margin-left: auto;
+  border-bottom-right-radius: 5px;
+}
+
+.user-message .message-name {
+  color: #e2e8f0;
+  text-align: right;
+}
+
+.send-button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #00a896;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.send-button:hover {
+  transform: scale(1.05);
+  background: #028090;
+}
+
+.send-button svg {
+  width: 20px;
+  height: 20px;
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TilEM — Lessons</title>
+  <link rel="stylesheet" href="lessons.css?v=2">
+</head>
+<body>
+
+  <!-- Орнаменты -->
+  <img src="Elements/ornament.png" class="ornament top-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament top-right" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-right" alt="Kazakh ornament">
+
+  <div class="app-viewport">
+
+    <header class="top-header">
+      <a href="index.html" class="back-link">← Home</a>
+
+      <div class="header-logo">
+        <h1 class="logo-title">Lessons</h1>
+        <p class="subtitle">Choose a topic and start learning</p>
+      </div>
+
+      <div class="header-profile">
+        <div class="avatar">О</div>
+        <div class="user-info">
+          <span class="greeting-sub">Сәлем! 👋</span>
+          <span class="user-name">Оралхан</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Общий прогресс -->
+    <section class="level-card">
+      <div class="level-top">
+        <div>
+          <h2 class="section-title">Level A1</h2>
+          <p class="section-subtitle" id="levelSub"></p>
+        </div>
+        <span class="words-badge" id="xpBadge">0 XP</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="levelFill"></div>
+      </div>
+    </section>
+
+    <!-- Темы -->
+    <main class="topics-grid" id="topicsGrid"></main>
+
+  </div>
+
+  <footer class="footer-bar">
+    <div class="footer-content">
+      <span class="footer-item">📧 supportTilEM@gmail.com</span>
+      <span class="footer-item footer-error">Found a mistake? Let us know!</span>
+      <span class="footer-item">📞 +7 (707) 493-00-75</span>
+    </div>
+  </footer>
+
+  <script src="words-db.js"></script>
+  <script src="lessons-db.js"></script>
+  <script>
+    // Ссылки вида lessons.html?topic=food сразу открывают урок
+    const wantedTopic = new URLSearchParams(location.search).get('topic');
+    if (TOPICS.some(t => t.id === wantedTopic)) {
+      location.replace('lesson.html?topic=' + wantedTopic);
+    }
+
+    const p = loadProgress();
+    const grid = document.getElementById('topicsGrid');
+
+    const doneCount = TOPICS.filter(t => p.done[t.id]).length;
+    document.getElementById('levelSub').textContent =
+      `${doneCount} of ${TOPICS.length} lessons completed`;
+    document.getElementById('xpBadge').textContent = `${p.xp} XP`;
+    setTimeout(() => {
+      document.getElementById('levelFill').style.width =
+        (doneCount / TOPICS.length * 100) + '%';
+    }, 80);
+
+    TOPICS.forEach(topic => {
+      const done = p.done[topic.id];
+      const card = document.createElement('a');
+      card.className = 'topic-card' + (done ? ' is-done' : '');
+      card.href = 'lesson.html?topic=' + topic.id;
+      card.innerHTML = `
+        <div class="topic-icon">${topic.icon}</div>
+        <div class="topic-title">${topic.title}</div>
+        <div class="topic-kk">${topic.kk}</div>
+        <div class="topic-meta">${getTopicWords(topic).length} words</div>
+        <span class="topic-status ${done ? 'done' : 'start'}">${done ? '✓ Completed' : 'Start →'}</span>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
