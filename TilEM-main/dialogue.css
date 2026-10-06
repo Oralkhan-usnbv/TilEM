@@ -1,0 +1,532 @@
+@font-face {
+  font-family: 'Garet';
+  src: url('assets/Garet-Book.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Garet-Heavy';
+  src: url('assets/Garet-Heavy.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+
+/* =========================
+   GENERAL
+   ========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Garet', system-ui, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f0f4f8 0%,
+      #cbd5e1 100%
+    );
+
+  overflow-x: hidden;
+}
+
+
+/* =========================
+   ORNAMENTS
+   ========================= */
+
+.ornament {
+  position: fixed;
+
+  width: 240px;
+  height: 240px;
+
+  object-fit: contain;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  mix-blend-mode: multiply;
+}
+
+.top-left {
+  top: 0;
+  left: 0;
+}
+
+.top-right {
+  top: 0;
+  right: 0;
+
+  transform: scaleX(-1);
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+
+  transform: scaleY(-1);
+}
+
+.bottom-right {
+  bottom: 0;
+  right: 0;
+
+  transform: scale(-1, -1);
+}
+
+
+/* =========================
+   PAGE
+   ========================= */
+
+.dialogue-page {
+
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 960px;
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  padding: 35px 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+}
+
+
+/* =========================
+   HEADER
+   ========================= */
+
+.dialogue-header {
+
+  text-align: center;
+
+  margin-bottom: 28px;
+}
+
+.dialogue-header h1 {
+
+  font-family: 'Garet-Heavy', sans-serif;
+
+  font-size: 3.8rem;
+
+  letter-spacing: 2px;
+
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffd700 0%,
+      #e6a100 100%
+    );
+
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  filter:
+    drop-shadow(
+      0 3px 6px rgba(0,0,0,0.12)
+    );
+}
+
+.dialogue-header p {
+
+  margin-top: 7px;
+
+  font-size: 1rem;
+
+  color: #64748b;
+
+  font-weight: 600;
+}
+
+
+/* =========================
+   SCENARIO
+   ========================= */
+
+.scenario-bar {
+
+  width: 100%;
+
+  min-height: 80px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.88
+    );
+
+  backdrop-filter: blur(10px);
+
+  border-radius: 24px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  box-shadow:
+    0 6px 18px
+    rgba(0,0,0,0.06);
+
+  border:
+    1px solid
+    rgba(255,255,255,0.95);
+
+  color: #334155;
+
+  font-size: 1.05rem;
+
+  margin-bottom: 20px;
+}
+
+.scenario-bar strong {
+
+  font-family: 'Garet-Heavy', sans-serif;
+
+  color: #0f172a;
+}
+
+
+/* =========================
+   DIALOGUE CONTAINER
+   ========================= */
+
+.dialogue-box {
+
+  width: 100%;
+
+  height: 500px;
+
+  background: #ffdd59;
+
+  border-radius: 28px;
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+  box-shadow:
+    0 12px 28px
+    rgba(0,0,0,0.10);
+}
+
+
+/* =========================
+   MESSAGES
+   ========================= */
+
+.messages {
+
+  flex: 1;
+
+  padding: 30px;
+
+  overflow-y: auto;
+}
+
+
+/* Message */
+
+.message {
+
+  max-width: 65%;
+
+  padding: 15px 18px;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 4px 12px
+    rgba(0,0,0,0.07);
+}
+
+.ai-message {
+
+  background: #ffffff;
+
+  color: #334155;
+
+  border-bottom-left-radius: 5px;
+}
+
+.message-name {
+
+  display: block;
+
+  font-family: 'Garet-Heavy', sans-serif;
+
+  font-size: 0.75rem;
+
+  color: #00a896;
+
+  margin-bottom: 5px;
+}
+
+.message p {
+
+  font-size: 0.95rem;
+
+  line-height: 1.5;
+}
+
+
+/* =========================
+   ANSWER
+   ========================= */
+
+.answer-area {
+
+  width: 100%;
+
+  min-height: 85px;
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.92
+  );
+
+  backdrop-filter: blur(10px);
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 12px 14px 12px 28px;
+
+  gap: 15px;
+}
+
+
+/* Input */
+
+.answer-area input {
+
+  flex: 1;
+
+  height: 55px;
+
+  background: transparent;
+
+  border: none;
+
+  outline: none;
+
+  font-family: 'Garet', sans-serif;
+
+  font-size: 1rem;
+
+  color: #0f172a;
+}
+
+.answer-area input::placeholder {
+
+  color: #64748b;
+}
+
+
+/* =========================
+   MICROPHONE
+   ========================= */
+
+.microphone-button {
+
+  width: 62px;
+
+  height: 62px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: #ffffff;
+
+  color: #0f172a;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  cursor: pointer;
+
+  flex-shrink: 0;
+
+  box-shadow:
+    0 5px 14px
+    rgba(0,0,0,0.12);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.microphone-button:hover {
+
+  transform: scale(1.06);
+
+  background: #f8fafc;
+}
+
+.microphone-button:active {
+
+  transform: scale(0.95);
+}
+
+.microphone-button svg {
+
+  width: 30px;
+
+  height: 30px;
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 768px) {
+
+  .ornament {
+
+    width: 100px;
+
+    height: 100px;
+  }
+
+
+  .dialogue-page {
+
+    padding:
+      25px
+      14px;
+  }
+
+
+  .dialogue-header {
+
+    margin-bottom: 20px;
+  }
+
+
+  .dialogue-header h1 {
+
+    font-size: 2.7rem;
+  }
+
+
+  .dialogue-header p {
+
+    font-size: 0.85rem;
+  }
+
+
+  .scenario-bar {
+
+    min-height: 65px;
+
+    border-radius: 20px;
+
+    font-size: 0.9rem;
+
+    margin-bottom: 14px;
+  }
+
+
+  .dialogue-box {
+
+    height: 520px;
+
+    border-radius: 22px;
+  }
+
+
+  .messages {
+
+    padding: 18px;
+  }
+
+
+  .message {
+
+    max-width: 85%;
+
+    padding: 13px 15px;
+  }
+
+
+  .message p {
+
+    font-size: 0.85rem;
+  }
+
+
+  .answer-area {
+
+    min-height: 75px;
+
+    padding:
+      10px
+      10px
+      10px
+      20px;
+  }
+
+
+  .answer-area input {
+
+    height: 48px;
+
+    font-size: 0.9rem;
+  }
+
+
+  .microphone-button {
+
+    width: 54px;
+
+    height: 54px;
+  }
+
+
+  .microphone-button svg {
+
+    width: 26px;
+
+    height: 26px;
+  }
+
+}

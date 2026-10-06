@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TilEM — Vocabulary</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Аккуратные точечные стили только для кнопки + Add Word и модального окна */
+    .vocab-summary-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .vocab-summary-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-add-word-orange {
+      background-color: #f39c12;
+      color: #ffffff;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .btn-add-word-orange:hover {
+      background-color: #e67e22;
+      transform: translateY(-1px);
+    }
+
+    /* Модальное окно */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 360px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-card h3 {
+      margin: 0;
+      color: #0f172a;
+      font-size: 1.15rem;
+    }
+
+    .modal-card input {
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .modal-card input:focus {
+      border-color: #f39c12;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .btn-cancel {
+      background: #f1f5f9;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .btn-save {
+      background: #f39c12;
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    /* Кнопка удаления на карточке */
+    .vocab-card {
+      position: relative;
+    }
+
+    .btn-delete-word {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .vocab-card:hover .btn-delete-word {
+      opacity: 1;
+    }
+
+    .btn-delete-word:hover {
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Казахские орнаменты по углам -->
+  <img src="Elements/ornament.png" class="ornament top-left" alt="Казахский орнамент">
+  <img src="Elements/ornament.png" class="ornament top-right" alt="Казахский орнамент">
+  <img src="Elements/ornament.png" class="ornament bottom-left" alt="Казахский орнамент">
+  <img src="Elements/ornament.png" class="ornament bottom-right" alt="Казахский орнамент">
+
+  <div class="app-viewport">
+
+    <!-- Верхняя шапка -->
+    <header class="top-header">
+      <div class="header-left">
+        <a href="index.html" class="btn-back-link">← Back to Main</a>
+      </div>
+
+      <div class="header-logo">
+        <h1 class="logo-title">Vocabulary</h1>
+        <p class="subtitle">Learn new Kazakh words!</p>
+      </div>
+
+      <div class="header-right"></div>
+    </header>
+
+    <!-- Блок «My Vocabulary» точно как в оригинале -->
+    <section class="vocab-section-header">
+      <div class="vocab-summary-bar">
+        <div>
+          <h2 class="section-title">My Vocabulary</h2>
+          <p class="section-subtitle" id="wordCountSub">15 saved words</p>
+        </div>
+        <div class="vocab-summary-right">
+          <span class="words-badge" id="wordCountBadge">15 words</span>
+          <button class="btn-add-word-orange" id="openModalBtn">+ Add Word</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Оригинальная сетка карточек -->
+    <main class="btn-grid vocab-grid" id="wordsGrid">
+      <!-- Динамические карточки с исходной версткой -->
+    </main>
+
+  </div>
+
+  <!-- Модальное окно добавления -->
+  <div class="modal-overlay" id="addWordModal">
+    <div class="modal-card">
+      <h3>Add New Word</h3>
+      <input type="text" id="inputKazakh" placeholder="Kazakh word (e.g. Кітап)">
+      <input type="text" id="inputTrans" placeholder="Transcription (e.g. [Kitap])">
+      <input type="text" id="inputEnglish" placeholder="English translation (e.g. Book)">
+      <div class="modal-actions">
+        <button class="btn-cancel" id="closeModalBtn">Cancel</button>
+        <button class="btn-save" id="saveWordBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Подвал сайта -->
+  <footer class="footer-bar">
+    <div class="footer-content">
+      <span class="footer-item">📧 supportTilEM@gmail.com</span>
+      <span class="footer-item footer-error">Found a mistake? Let us know!</span>
+      <span class="footer-item">📞 +7 (707) 493-00-75</span>
+    </div>
+  </footer>
+
+  <script>
+    const defaultWords = [
+      { english: 'Hello', kazakh: 'Сәлем', trans: '[Salem]' },
+      { english: 'Thank you', kazakh: 'Рақмет', trans: '[Raqmet]' },
+      { english: 'Friend', kazakh: 'Дос', trans: '[Dos]' },
+      { english: 'Family', kazakh: 'Отбасы', trans: '[Otpasy]' },
+      { english: 'Home', kazakh: 'Үй', trans: '[Uy]' },
+      { english: 'School', kazakh: 'Мектеп', trans: '[Mektep]' },
+      { english: 'Book', kazakh: 'Кітап', trans: '[Kitap]' },
+      { english: 'Water', kazakh: 'Су', trans: '[Su]' },
+      { english: 'Food', kazakh: 'Тамақ', trans: '[Tamaq]' },
+      { english: 'Good', kazakh: 'Жақсы', trans: '[Zhaqsy]' },
+      { english: 'Beautiful', kazakh: 'Әдемі', trans: '[Ademi]' },
+      { english: 'Today', kazakh: 'Бүгін', trans: '[Bugin]' }
+    ];
+
+    function getStoredWords() {
+      const stored = localStorage.getItem('tilem_vocab_exact');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+      localStorage.setItem('tilem_vocab_exact', JSON.stringify(defaultWords));
+      return defaultWords;
+    }
+
+    function renderWords() {
+      const words = getStoredWords();
+      const grid = document.getElementById('wordsGrid');
+      const badge = document.getElementById('wordCountBadge');
+      const sub = document.getElementById('wordCountSub');
+
+      badge.textContent = `${words.length} words`;
+      sub.textContent = `${words.length} saved words`;
+      grid.innerHTML = '';
+
+      words.forEach((item, index) => {
+        const num = String(index + 1).padStart(2, '0');
+        const card = document.createElement('div');
+        // Используем оригинальные классы вашего CSS!
+        card.className = 'vocab-card';
+
+        card.innerHTML = `
+          <button class="btn-delete-word" onclick="deleteWord(${index})" title="Delete word">×</button>
+          <div class="vocab-num">${num}</div>
+          <div class="vocab-text">
+            <div class="vocab-en">${item.english}</div>
+            <div class="vocab-kk">${item.kazakh}</div>
+            <div class="vocab-tr">${item.trans || ''}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function deleteWord(index) {
+      const words = getStoredWords();
+      words.splice(index, 1);
+      localStorage.setItem('tilem_vocab_exact', JSON.stringify(words));
+      renderWords();
+    }
+
+    // Логика модалки
+    const modal = document.getElementById('addWordModal');
+    document.getElementById('openModalBtn').onclick = () => modal.classList.add('active');
+    document.getElementById('closeModalBtn').onclick = () => modal.classList.remove('active');
+
+    document.getElementById('saveWordBtn').onclick = () => {
+      const kk = document.getElementById('inputKazakh').value.trim();
+      const tr = document.getElementById('inputTrans').value.trim();
+      const en = document.getElementById('inputEnglish').value.trim();
+
+      if (!kk || !en) {
+        alert('Please enter both Kazakh word and English translation!');
+        return;
+      }
+
+      const words = getStoredWords();
+      words.unshift({
+        english: en,
+        kazakh: kk,
+        trans: tr ? (tr.startsWith('[') ? tr : `[${tr}]`) : ''
+      });
+
+      localStorage.setItem('tilem_vocab_exact', JSON.stringify(words));
+
+      document.getElementById('inputKazakh').value = '';
+      document.getElementById('inputTrans').value = '';
+      document.getElementById('inputEnglish').value = '';
+      modal.classList.remove('active');
+
+      renderWords();
+    };
+
+    renderWords();
+  </script>
+</body>
+</html>

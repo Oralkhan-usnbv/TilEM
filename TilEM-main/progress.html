@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TilEM — Progress</title>
+  <link rel="stylesheet" href="progress.css">
+</head>
+<body>
+
+  <!-- Орнаменты -->
+  <img src="Elements/ornament.png" class="ornament top-left" alt="Казахский орнамент">
+  <img src="Elements/ornament.png" class="ornament top-right" alt="Казахский орнамент">
+  <img src="Elements/ornament.png" class="ornament bottom-left" alt="Казахский орнамент">
+  <img src="Elements/ornament.png" class="ornament bottom-right" alt="Казахский орнамент">
+
+  <div class="app-viewport">
+
+    <!-- Шапка страницы -->
+    <header class="top-header">
+      
+      <!-- Аватарка профиля слева сверху -->
+      <div class="header-profile">
+        <div class="avatar">О</div>
+        <div class="user-info">
+          <span class="greeting-sub">Сәлем! 👋</span>
+          <span class="user-name">Оралхан</span>
+        </div>
+      </div>
+
+      <div class="header-logo">
+        <h1 class="logo-title">Your progress</h1>
+        <p class="subtitle">Make it better</p>
+      </div>
+
+      <!-- Кнопка Назад справа -->
+      <a href="index.html" class="back-button">
+        ← Main Menu
+      </a>
+
+    </header>
+
+    <!-- Главный блок прогресса -->
+    <main class="progress-container">
+      
+      <!-- Секция с заполнением шкалы -->
+      <section class="progress-bar-card">
+        <div class="progress-track">
+          <!-- Процент в CSS задается через --progress: 47% -->
+          <div class="progress-fill" style="--progress: 47%;"></div>
+        </div>
+        <div class="progress-percentage">47%</div>
+      </section>
+
+      <!-- Темы: Пройденные и Предстоящие -->
+      <section class="themes-grid">
+
+        <!-- Learned themes -->
+        <div class="themes-column learned-box">
+          <h2 class="themes-title">Learned themes</h2>
+          <ul class="themes-list">
+            <li><a href="lessons.html?topic=greetings" class="theme-link learned"><span class="check-icon">✓</span> Greetings</a></li>
+            <li><a href="lessons.html?topic=family" class="theme-link learned"><span class="check-icon">✓</span> Family</a></li>
+            <li><a href="lessons.html?topic=travel" class="theme-link learned"><span class="check-icon">✓</span> Travel</a></li>
+            <li><a href="lessons.html?topic=food" class="theme-link learned"><span class="check-icon">✓</span> Food</a></li>
+          </ul>
+        </div>
+
+        <!-- Кнопка Next Lesson по центру -->
+        <div class="next-lesson-center">
+          <a href="lessons.html" class="btn-next-lesson">
+            <span class="next-text">NEXT LESSON</span>
+            <span class="next-arrow">→</span>
+          </a>
+        </div>
+
+        <!-- Next themes -->
+        <div class="themes-column next-box">
+          <h2 class="themes-title">Next themes</h2>
+          <ul class="themes-list">
+            <li><a href="lessons.html?topic=nuclear-physic" class="theme-link next"><span class="lock-icon">🔒</span> Nuclear physic</a></li>
+            <li><a href="lessons.html?topic=demographic" class="theme-link next"><span class="lock-icon">🔒</span> Demographic</a></li>
+            <li><a href="lessons.html?topic=school" class="theme-link next"><span class="lock-icon">🔒</span> School</a></li>
+            <li><a href="lessons.html?topic=culture" class="theme-link next"><span class="lock-icon">🔒</span> Culture</a></li>
+          </ul>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Подвал сайта -->
+  <footer class="footer-bar">
+    <div class="footer-content">
+      <span class="footer-item">📧 supportTilEM@gmail.com</span>
+      <span class="footer-item footer-error">Found a mistake? Let us know!</span>
+      <span class="footer-item">📞 +7 (707) 493-00-75</span>
+    </div>
+  </footer>
+
+</body>
+</html>
