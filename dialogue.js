@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!userText) return;
 
     // 1. Показываем сообщение пользователя
-    appendMessage('Оралхан', userText, false);
+    appendMessage((window.TilEM && TilEM.getCachedName()) || 'You', userText, false);
     answerInput.value = '';
 
     // 2. Имитация ответа

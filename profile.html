@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TilEM — Profile</title>
+  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="auth.css?v=1">
+</head>
+<body class="auth-page">
+
+  <!-- Орнаменты -->
+  <img src="Elements/ornament.png" class="ornament top-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament top-right" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-right" alt="Kazakh ornament">
+
+  <div class="app-viewport">
+
+    <header class="top-header">
+      <a href="index.html" class="back-link">← Home</a>
+
+      <div class="header-logo">
+        <h1 class="logo-title">Profile</h1>
+        <p class="subtitle">Make it yours</p>
+      </div>
+
+      <div class="header-spacer"></div>
+    </header>
+
+    <!-- Пока профиль загружается -->
+    <p class="auth-note" id="loadingNote">Loading your profile…</p>
+
+    <div id="profileContent" class="hidden">
+
+      <!-- Верх: ава, имя, почта -->
+      <section class="auth-card">
+        <div class="profile-hero">
+          <div class="profile-avatar-big" id="bigAvatar">🙂</div>
+          <div class="profile-name" id="profileName"></div>
+          <div class="profile-meta" id="profileEmail"></div>
+          <div class="profile-meta" id="profileSince"></div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-tile">
+            <span class="stat-value" id="statXp">0</span>
+            <span class="stat-label">XP</span>
+          </div>
+          <div class="stat-tile">
+            <span class="stat-value" id="statLevel">1</span>
+            <span class="stat-label">Level</span>
+          </div>
+          <div class="stat-tile">
+            <span class="stat-value" id="statStreak">0</span>
+            <span class="stat-label">Day streak</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Выбор авы -->
+      <section class="auth-card">
+        <h2 class="auth-title">Choose your avatar</h2>
+        <div class="avatar-grid" id="avatarGrid"></div>
+        <p class="form-msg" id="avatarMsg" role="status"></p>
+      </section>
+
+      <!-- Смена имени -->
+      <section class="auth-card">
+        <h2 class="auth-title">Your name</h2>
+        <div class="name-row">
+          <input id="nameInput" type="text" maxlength="20" autocomplete="nickname" aria-label="Your name">
+          <button type="button" class="btn-small" id="saveNameBtn">Save</button>
+        </div>
+        <p class="form-msg" id="nameMsg" role="status"></p>
+      </section>
+
+      <!-- Выход -->
+      <section class="auth-card">
+        <button type="button" class="btn-danger" id="logoutBtn">Log out</button>
+      </section>
+
+    </div>
+
+  </div>
+
+  <footer class="footer-bar">
+    <div class="footer-content">
+      <span class="footer-item">📧 supportTilEM@gmail.com</span>
+      <span class="footer-item footer-error">Found a mistake? Let us know!</span>
+      <span class="footer-item">📞 +7 (707) 493-00-75</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.1"></script>
+  <script src="words-db.js"></script>
+  <script src="lessons-db.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    (async function () {
+      const XP_PER_LEVEL = 50; // как на главной: каждые 50 XP = новый уровень
+
+      const loadingNote = document.getElementById('loadingNote');
+      const content = document.getElementById('profileContent');
+      const bigAvatar = document.getElementById('bigAvatar');
+      const profileName = document.getElementById('profileName');
+      const profileEmail = document.getElementById('profileEmail');
+      const profileSince = document.getElementById('profileSince');
+      const avatarGrid = document.getElementById('avatarGrid');
+      const avatarMsg = document.getElementById('avatarMsg');
+      const nameInput = document.getElementById('nameInput');
+      const saveNameBtn = document.getElementById('saveNameBtn');
+      const nameMsg = document.getElementById('nameMsg');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      function showMsg(el, text, type) {
+        el.textContent = text || '';
+        el.className = 'form-msg' + (type ? ' ' + type : '');
+      }
+
+      let profile;
+      try {
+        profile = await TilEM.getProfile();
+      } catch (err) {
+        loadingNote.textContent = err.message;
+        return;
+      }
+
+      // Не вошёл: отправляем на страницу входа
+      if (!profile) {
+        window.location.replace('login.html');
+        return;
+      }
+
+      /* ---------- Верх профиля ---------- */
+      function renderHero() {
+        bigAvatar.textContent = profile.avatar;
+        profileName.textContent = profile.username;
+        profileEmail.textContent = profile.email || '';
+        if (profile.created_at) {
+          const d = new Date(profile.created_at);
+          profileSince.textContent = 'Member since ' +
+            d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+        }
+      }
+
+      /* ---------- Цифры (пока берём из этого браузера) ---------- */
+      function renderStats() {
+        const progress = loadProgress();
+        document.getElementById('statXp').textContent = progress.xp.toLocaleString('en-US');
+        document.getElementById('statLevel').textContent = Math.floor(progress.xp / XP_PER_LEVEL) + 1;
+        document.getElementById('statStreak').textContent = getCurrentStreak();
+      }
+
+      /* ---------- Выбор авы ---------- */
+      function renderAvatars() {
+        avatarGrid.innerHTML = '';
+        TilEM.AVATARS.forEach((emoji) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'avatar-option' + (emoji === profile.avatar ? ' selected' : '');
+          btn.textContent = emoji;
+          btn.setAttribute('aria-label', 'Avatar ' + emoji);
+          btn.addEventListener('click', async () => {
+            if (emoji === profile.avatar) return;
+            showMsg(avatarMsg, '');
+            try {
+              const saved = await TilEM.updateProfile({ avatar: emoji });
+              profile.avatar = saved.avatar;
+              renderHero();
+              renderAvatars();
+              showMsg(avatarMsg, 'Avatar saved ✓', 'ok');
+            } catch (err) {
+              showMsg(avatarMsg, err.message, 'error');
+            }
+          });
+          avatarGrid.appendChild(btn);
+        });
+      }
+
+      /* ---------- Смена имени ---------- */
+      nameInput.value = profile.username;
+
+      async function saveName() {
+        showMsg(nameMsg, '');
+        saveNameBtn.disabled = true;
+        try {
+          const saved = await TilEM.updateProfile({ username: nameInput.value });
+          profile.username = saved.username;
+          nameInput.value = saved.username;
+          renderHero();
+          showMsg(nameMsg, 'Name saved ✓', 'ok');
+        } catch (err) {
+          showMsg(nameMsg, err.message, 'error');
+        } finally {
+          saveNameBtn.disabled = false;
+        }
+      }
+
+      saveNameBtn.addEventListener('click', saveName);
+      nameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') saveName();
+      });
+
+      /* ---------- Выход ---------- */
+      logoutBtn.addEventListener('click', async () => {
+        logoutBtn.disabled = true;
+        try {
+          await TilEM.signOut();
+        } catch (e) {}
+        window.location.href = 'index.html';
+      });
+
+      renderHero();
+      renderStats();
+      renderAvatars();
+      loadingNote.classList.add('hidden');
+      content.classList.remove('hidden');
+    })();
+  </script>
+</body>
+</html>

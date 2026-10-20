@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TilEM — Log in</title>
+  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="auth.css?v=1">
+</head>
+<body class="auth-page">
+
+  <!-- Орнаменты -->
+  <img src="Elements/ornament.png" class="ornament top-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament top-right" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-left" alt="Kazakh ornament">
+  <img src="Elements/ornament.png" class="ornament bottom-right" alt="Kazakh ornament">
+
+  <div class="app-viewport">
+
+    <header class="top-header">
+      <a href="index.html" class="back-link">← Home</a>
+
+      <div class="header-logo">
+        <h1 class="logo-title">Welcome</h1>
+        <p class="subtitle">Log in to save your progress</p>
+      </div>
+
+      <div class="header-spacer"></div>
+    </header>
+
+    <main class="auth-card">
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" id="tabLogin">Log in</button>
+        <button type="button" class="auth-tab" id="tabSignup">Sign up</button>
+      </div>
+
+      <form id="authForm" novalidate>
+
+        <!-- Имя нужно только при регистрации -->
+        <div class="field hidden" id="nameField">
+          <label for="nameInput">Name</label>
+          <input id="nameInput" type="text" maxlength="20" autocomplete="nickname" placeholder="How should we call you?">
+        </div>
+
+        <div class="field">
+          <label for="emailInput">Email</label>
+          <input id="emailInput" type="email" autocomplete="email" placeholder="you@example.com">
+        </div>
+
+        <div class="field">
+          <label for="passwordInput">Password</label>
+          <input id="passwordInput" type="password" minlength="6" autocomplete="current-password" placeholder="At least 6 characters">
+        </div>
+
+        <button type="submit" class="btn-primary" id="submitBtn">Log in</button>
+        <p class="form-msg" id="formMsg" role="status"></p>
+      </form>
+
+      <p class="auth-note">Password recovery is not available yet, so please remember your password.</p>
+    </main>
+
+  </div>
+
+  <footer class="footer-bar">
+    <div class="footer-content">
+      <span class="footer-item">📧 supportTilEM@gmail.com</span>
+      <span class="footer-item footer-error">Found a mistake? Let us know!</span>
+      <span class="footer-item">📞 +7 (707) 493-00-75</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.1"></script>
+  <script src="auth.js"></script>
+  <script>
+    (async function () {
+      const form = document.getElementById('authForm');
+      const tabLogin = document.getElementById('tabLogin');
+      const tabSignup = document.getElementById('tabSignup');
+      const nameField = document.getElementById('nameField');
+      const nameInput = document.getElementById('nameInput');
+      const emailInput = document.getElementById('emailInput');
+      const passwordInput = document.getElementById('passwordInput');
+      const submitBtn = document.getElementById('submitBtn');
+      const formMsg = document.getElementById('formMsg');
+
+      let mode = 'login'; // 'login' или 'signup'
+
+      function showMsg(text, type) {
+        formMsg.textContent = text || '';
+        formMsg.className = 'form-msg' + (type ? ' ' + type : '');
+      }
+
+      function setMode(newMode) {
+        mode = newMode;
+        const isSignup = mode === 'signup';
+        tabLogin.classList.toggle('active', !isSignup);
+        tabSignup.classList.toggle('active', isSignup);
+        nameField.classList.toggle('hidden', !isSignup);
+        passwordInput.setAttribute('autocomplete', isSignup ? 'new-password' : 'current-password');
+        submitBtn.textContent = isSignup ? 'Create account' : 'Log in';
+        showMsg('');
+      }
+
+      tabLogin.addEventListener('click', () => setMode('login'));
+      tabSignup.addEventListener('click', () => setMode('signup'));
+
+      // Если человек уже вошёл, показываем ему профиль
+      try {
+        const user = await TilEM.getUser();
+        if (user) { window.location.replace('profile.html'); return; }
+      } catch (e) {}
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        showMsg('');
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+          showMsg('Please enter your email and password.', 'error');
+          return;
+        }
+        if (mode === 'signup' && !nameInput.value.trim()) {
+          showMsg('Please enter your name.', 'error');
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Please wait…';
+
+        try {
+          if (mode === 'signup') {
+            const result = await TilEM.signUp(nameInput.value, email, password);
+            if (result.needsConfirm) {
+              setMode('login');
+              showMsg('Account created! Check your email to confirm it, then log in.', 'ok');
+            } else {
+              window.location.href = 'profile.html'; // тут можно сразу выбрать аву
+            }
+          } else {
+            await TilEM.signIn(email, password);
+            window.location.href = 'index.html';
+          }
+        } catch (err) {
+          showMsg(err.message, 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = mode === 'signup' ? 'Create account' : 'Log in';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
