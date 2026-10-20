@@ -39,7 +39,7 @@
     <section class="status-bar">
       <div class="status-item streak">
         <span class="status-icon">🔥</span>
-        <span class="status-text"><strong>25 Days</strong> Streak</span>
+        <span class="status-text" id="streak-container"><strong>0 Days</strong> Streak</span>
       </div>
 
       <div class="status-divider"></div>
@@ -178,6 +178,10 @@
       } catch (e) {}
 
       // 3. Подставляем на страницу
+      const streak = getCurrentStreak();
+      document.getElementById('streak-container').innerHTML =
+        `<strong>${streak} ${streak === 1 ? 'Day' : 'Days'}</strong> Streak`;
+
       document.getElementById('xp-container').innerHTML =
         `<strong>${progress.xp.toLocaleString('en-US')} XP</strong> • Level ${level}`;
 

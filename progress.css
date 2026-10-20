@@ -29,9 +29,7 @@ body {
   justify-content: space-between;
 }
 
-/* =========================
-   ORNAMENTS (как на Dialogue и Vocabulary)
-   ========================= */
+/*Орнаменты */
 
 .ornament {
   position: fixed;
@@ -48,9 +46,7 @@ body {
 .bottom-left  { bottom: 0; left: 0;  transform: scaleY(-1); }
 .bottom-right { bottom: 0; right: 0; transform: scale(-1, -1); }
 
-/* =========================
-   PAGE
-   ========================= */
+/* База */
 
 .app-viewport {
   position: relative;
@@ -65,9 +61,7 @@ body {
   align-items: center;
 }
 
-/* =========================
-   HEADER: Home | заголовок | профиль
-   ========================= */
+/* Вверх и архитектура сайта */
 
 .top-header {
   display: grid;
@@ -169,9 +163,7 @@ body {
   color: #0f172a;
 }
 
-/* =========================
-   PROGRESS CONTENT
-   ========================= */
+/* Прогресс контент */
 
 .progress-container {
   width: 100%;
@@ -356,9 +348,7 @@ body {
   }
 }
 
-/* =========================
-   FOOTER
-   ========================= */
+/* Футер снизу */
 
 .footer-bar {
   width: 100%;
@@ -386,9 +376,7 @@ body {
   font-weight: 600;
 }
 
-/* =========================
-   MOBILE
-   ========================= */
+/* Мобилка */
 
 @media (max-width: 720px) {
 
@@ -402,7 +390,7 @@ body {
     padding: 14px 12px 24px;
   }
 
-  /* сверху в одну строку: Home слева, профиль справа; заголовок ниже */
+  /* верхняя часть все в одной строке */
   .top-header {
     grid-template-columns: 1fr auto;
     grid-template-areas:

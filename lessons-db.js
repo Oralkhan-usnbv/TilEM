@@ -58,3 +58,43 @@ function loadProgress() {
 function saveProgress(p) {
   localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
 }
+
+/* ---------- Streak: сколько дней подряд ты проходишь уроки ---------- */
+const STREAK_KEY = 'tilem_streak';
+
+// Дата в местном времени вида "2026-10-13" (не UTC, чтобы день менялся в полночь по твоему времени)
+function dayString(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function loadStreak() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STREAK_KEY));
+    if (s && typeof s.count === 'number' && s.last) return s;
+  } catch (e) {}
+  return { count: 0, last: null };
+}
+
+// Сколько дней стрик показывать сейчас: если вчера ты занимался, он ещё жив,
+// если пропустил день или больше, то 0
+function getCurrentStreak() {
+  const s = loadStreak();
+  const now = new Date();
+  const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  return (s.last === dayString(now) || s.last === dayString(yesterday)) ? s.count : 0;
+}
+
+// Вызываем, когда пройден урок
+function recordStudyDay() {
+  const s = loadStreak();
+  const today = dayString(new Date());
+  if (s.last === today) return s; // сегодня уже засчитано
+
+  s.count = getCurrentStreak() + 1; // вчера занимался -> +1, иначе начинаем с 1
+  s.last = today;
+  try { localStorage.setItem(STREAK_KEY, JSON.stringify(s)); } catch (e) {}
+  return s;
+}
